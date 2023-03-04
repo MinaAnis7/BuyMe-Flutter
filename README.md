@@ -10,6 +10,7 @@
 - BuyMe uses **API Integration**, Link on Postman: https://www.getpostman.com/collections/3223d639447a8524e38f
 - BuyMe is a **responsive application** that works on different kinds of screens.
 - Uses **Bloc** concept.
+- Uses **Poppins Font**.
 
 ## Tools and Plugins
 - Plugins
