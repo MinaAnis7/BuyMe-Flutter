@@ -10,6 +10,8 @@ import '../shared/components/components.dart';
 import '../shared/network/styles/colors.dart';
 
 class FavoritesScreen extends StatelessWidget {
+  const FavoritesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit, HomeStates>(
@@ -31,6 +33,7 @@ class FavoritesScreen extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: ConditionalBuilder(
+            // ignore: unnecessary_null_comparison
             condition: cubit.getFavoriteModel != null,
             builder: (context) => Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,13 +50,13 @@ class FavoritesScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.separated(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) => favoriteItemBuilder(
-                        cubit.getFavoriteModel.products[index], context),
+                        cubit.getFavoriteModel.products![index], context),
                     separatorBuilder: (context, index) => SizedBox(
                       height: 20.0.h,
                     ),
-                    itemCount: cubit.getFavoriteModel.products.length,
+                    itemCount: cubit.getFavoriteModel.products!.length,
                   ),
                 ),
               ],
@@ -122,23 +125,23 @@ class FavoritesScreen extends StatelessWidget {
                             onTap: () {
                               HomeCubit.get(context).changeFavorite(product.id);
                             },
+                            highlightColor: HomeCubit.get(context).isDark
+                                ? asmar
+                                : Colors.white,
                             child: Container(
                               padding: EdgeInsets.all(7.0.w),
                               child: Icon(
                                 Icons.heart_broken,
                                 color: metal,
                                 size: 25.0.w,
-                                ),
-                            ),
-                              highlightColor: HomeCubit.get(context).isDark
-                                  ? asmar
-                                  : Colors.white,
+                              ),
                             ),
                           ),
                         ),
+                      ),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Padding(
                     padding: EdgeInsets.only(
                       bottom: 10.0.h,
@@ -146,7 +149,7 @@ class FavoritesScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          product.price.toString() + ' EGP',
+                          '${product.price} EGP',
                           style: TextStyle(
                             color: orange,
                             fontSize: 18.0.sp,
@@ -154,13 +157,13 @@ class FavoritesScreen extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5.0,
                         ),
                         if (product.price != product.oldPrice)
                           Expanded(
                             child: Text(
-                              product.oldPrice.toString() + ' EGP',
+                              '${product.oldPrice} EGP',
                               style: TextStyle(
                                 fontSize: 14.0.sp,
                                 color: skin,

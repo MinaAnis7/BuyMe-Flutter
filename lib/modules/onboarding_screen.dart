@@ -9,6 +9,7 @@ import 'package:shop_app/shared/network/styles/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../shared/cubits/onboarding_cubit/states.dart';
 
+// ignore: must_be_immutable
 class OnboardingScreen extends StatelessWidget {
   List<OnboardingModel> onBoardInfo = [
     OnboardingModel(
@@ -22,6 +23,8 @@ class OnboardingScreen extends StatelessWidget {
         'Open The Doors, Your Order is Now Ready For You!',
         'assets/images/iii.png'),
   ];
+
+  OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class OnboardingScreen extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: PageView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   controller: pageController,
                   itemBuilder: (context, index) =>
                       onboardBuildPage(onBoardInfo[index]),
@@ -46,8 +49,9 @@ class OnboardingScreen extends StatelessWidget {
                   onPageChanged: (index) {
                     if (index == onBoardInfo.length - 1) {
                       OnBoardingCubit.get(context).listenPageLastIndex(true);
-                    } else
+                    } else {
                       OnBoardingCubit.get(context).listenPageLastIndex(false);
+                    }
                   },
                 ),
               ),
@@ -71,7 +75,7 @@ class OnboardingScreen extends StatelessWidget {
                           dotWidth: 10.0.sp,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Row(
                         children: [
                           //Skip
@@ -79,7 +83,7 @@ class OnboardingScreen extends StatelessWidget {
                             onPressed: () {
                               CacheHelper.saveData(
                                   key: 'onboardingIsSeen', value: true);
-                              navigateAndRemove(context, LoginScreen());
+                              navigateAndRemove(context, const LoginScreen());
                             },
                             child: Text(
                               'SKIP',
@@ -89,17 +93,17 @@ class OnboardingScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           MaterialButton(
                             padding: EdgeInsets.all(10.0.sp),
                             onPressed: () {
                               if (OnBoardingCubit.get(context).isLastPage) {
                                 CacheHelper.saveData(
                                     key: 'onboardingIsSeen', value: true);
-                                navigateAndRemove(context, LoginScreen());
+                                navigateAndRemove(context, const LoginScreen());
                               } else {
                                 pageController.nextPage(
-                                  duration: Duration(milliseconds: 1000),
+                                  duration: const Duration(milliseconds: 1000),
                                   curve: Curves.fastLinearToSlowEaseIn,
                                 );
                               }
@@ -109,7 +113,7 @@ class OnboardingScreen extends StatelessWidget {
                                 ? RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.circular(20.0.sp))
-                                : CircleBorder(),
+                                : const CircleBorder(),
                             child: OnBoardingCubit.get(context).isLastPage
                                 ? Text(
                                     'Get Started',
@@ -143,7 +147,7 @@ class OnboardingScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 40.0.h),
             child: Image.asset(
-              '${pageInfo.imagePath}',
+              pageInfo.imagePath,
             ),
           ),
 
@@ -153,7 +157,7 @@ class OnboardingScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  '${pageInfo.title}',
+                  pageInfo.title,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: blue,
@@ -162,7 +166,7 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${pageInfo.describtion}',
+                  pageInfo.describtion,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: black,

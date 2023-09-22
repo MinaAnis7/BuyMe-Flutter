@@ -1,37 +1,31 @@
-class CategoryModel
-{
+class CategoryModel {
   late bool status;
   late CategoryDataModel data;
 
-  CategoryModel.fromJson(Map<String, dynamic> json)
-  {
+  CategoryModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     data = CategoryDataModel.fromJson(json["data"]);
   }
 }
 
-class CategoryDataModel
-{
+class CategoryDataModel {
   late int currentPage;
-  List<DataModel_C>? data = [];
+  List<DataModelC>? data = [];
 
-  CategoryDataModel.fromJson(Map<String, dynamic>json)
-  {
+  CategoryDataModel.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
-    json['data'].forEach((element){
-      data?.add(DataModel_C.fromJson(element));
+    json['data'].forEach((element) {
+      data?.add(DataModelC.fromJson(element));
     });
   }
 }
 
-class DataModel_C
-{
+class DataModelC {
   late int id;
   late String name;
   late String image;
 
-  DataModel_C.fromJson(Map<String, dynamic>json)
-  {
+  DataModelC.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     image = json['image'];

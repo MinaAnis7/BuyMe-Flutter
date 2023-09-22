@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,57 +14,55 @@ import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:shop_app/shared/network/remote/dio.dart';
 import 'package:shop_app/shared/network/styles/styles.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ByteData data = await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
-  SecurityContext.defaultContext.setTrustedCertificatesBytes(data.buffer.asUint8List(),);
+  ByteData data =
+      await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
+  SecurityContext.defaultContext.setTrustedCertificatesBytes(
+    data.buffer.asUint8List(),
+  );
   DioHelper.init();
   await CacheHelper.init();
   String token = CacheHelper.getData(key: 'token') ?? '';
   bool onboardingIsSeen = CacheHelper.getData(key: 'onboardingIsSeen') ?? false;
   Widget startWidget = OnboardingScreen();
 
-  if(onboardingIsSeen)
-    {
-      if(token != '')
-        {
-          startWidget = HomeLayout();
-        }
-      else
-      {
-        startWidget = LoginScreen();
-      }
+  if (onboardingIsSeen) {
+    if (token != '') {
+      startWidget = const HomeLayout();
+    } else {
+      startWidget = const LoginScreen();
     }
+  }
 
-  runApp(MyApp(startWidget));
+  runApp(MyApp(startWidget: startWidget));
 }
-class MyApp extends StatelessWidget {
-  Widget startWidget;
 
-  MyApp(this.startWidget);
+// ignore: must_be_immutable
+class MyApp extends StatelessWidget {
+  Widget? startWidget;
+
+  MyApp({super.key, this.startWidget});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-      [
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]
-    );
-    return  MultiBlocProvider(
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    return MultiBlocProvider(
       providers: [
-        BlocProvider<OnBoardingCubit>(
-            create: (context) => OnBoardingCubit()
-        ),
+        BlocProvider<OnBoardingCubit>(create: (context) => OnBoardingCubit()),
         BlocProvider<LoginCubit>(
           create: (context) => LoginCubit(),
         ),
         BlocProvider<HomeCubit>(
-            create: (context) => HomeCubit()..getHomeData()
-              ..getCategoryData()
-              ..getFavorites()
-              ..getProfileData(),
+          create: (context) => HomeCubit()
+            ..getHomeData()
+            ..getCategoryData()
+            ..getFavorites()
+            ..getProfileData(),
         )
       ],
       child: BlocConsumer<HomeCubit, HomeStates>(
@@ -75,12 +72,13 @@ class MyApp extends StatelessWidget {
             designSize: const Size(360, 690),
             minTextAdapt: true,
             splitScreenMode: true,
-            builder: (context , child)
-            {
+            builder: (context, child) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: lightTheme,
-                themeMode:  HomeCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
+                themeMode: HomeCubit.get(context).isDark
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
                 darkTheme: darkTheme,
                 home: startWidget,
               );

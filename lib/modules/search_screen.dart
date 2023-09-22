@@ -11,6 +11,8 @@ import '../models/home_data_model.dart';
 import '../shared/network/styles/colors.dart';
 
 class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit, HomeStates>(
@@ -27,29 +29,33 @@ class SearchScreen extends StatelessWidget {
             child: Column(
               children: [
                 defaultTFF(
-                  text: 'Search',
-                  prefixIcon: CupertinoIcons.search,
-                  onSubmit: (String text)
-                    {
+                    text: 'Search',
+                    prefixIcon: CupertinoIcons.search,
+                    onSubmit: (String text) {
                       cubit.getSearch(text);
-                    }
+                    }),
+                SizedBox(
+                  height: 10.0.h,
                 ),
-                SizedBox(height: 10.0.h,),
                 if (state is GetSearchLoading)
-                  LinearProgressIndicator(color: blue,),
-                SizedBox(height: 10.0.h,),
-                if(cubit.searchModel != null)
+                  LinearProgressIndicator(
+                    color: blue,
+                  ),
+                SizedBox(
+                  height: 10.0.h,
+                ),
+                if (cubit.searchModel != null)
                   Expanded(
-                      child: ListView.separated(
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) => searchItemBuilder(
-                            cubit.searchModel!.products[index], context),
-                        separatorBuilder: (context, index) => SizedBox(
-                          height: 20.0.h,
-                        ),
-                        itemCount: cubit.searchModel!.products.length,
+                    child: ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) => searchItemBuilder(
+                          cubit.searchModel!.products[index], context),
+                      separatorBuilder: (context, index) => SizedBox(
+                        height: 20.0.h,
                       ),
+                      itemCount: cubit.searchModel!.products.length,
                     ),
+                  ),
               ],
             ),
           ),
@@ -109,7 +115,7 @@ class SearchScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Padding(
                     padding: EdgeInsets.only(
                       bottom: 10.0.h,
@@ -117,7 +123,7 @@ class SearchScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          product.price.toString() + ' EGP',
+                          '${product.price} EGP',
                           style: TextStyle(
                             color: orange,
                             fontSize: 18.0.sp,
