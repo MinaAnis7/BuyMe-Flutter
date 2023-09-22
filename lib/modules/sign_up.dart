@@ -10,12 +10,15 @@ import '../layout/home_layout.dart';
 import '../shared/components/components.dart';
 import '../shared/network/styles/colors.dart';
 
+// ignore: must_be_immutable
 class SignUpScreen extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   var formKey = GlobalKey<FormState>();
+
+  SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class SignUpScreen extends StatelessWidget {
             HomeCubit.get(context).getProfileData();
             HomeCubit.get(context).getHomeData();
             HomeCubit.get(context).getFavorites();
-            navigateAndRemove(context, HomeLayout());
+            navigateAndRemove(context, const HomeLayout());
           }
         }
       },
@@ -53,7 +56,7 @@ class SignUpScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: Form(
                       key: formKey,
                       child: Column(
@@ -91,8 +94,10 @@ class SignUpScreen extends StatelessWidget {
                               keyboardType: TextInputType.text,
                               prefixIcon: Icons.person,
                               validate: (value) {
-                                if (value != null && value == '')
+                                if (value != null && value == '') {
                                   return 'Please, Enter Your Name';
+                                }
+                                return null;
                               }),
                           SizedBox(
                             height: 20.0.h,
@@ -104,8 +109,10 @@ class SignUpScreen extends StatelessWidget {
                               keyboardType: TextInputType.emailAddress,
                               prefixIcon: Icons.alternate_email,
                               validate: (value) {
-                                if (value != null && value == '')
+                                if (value != null && value == '') {
                                   return 'Please, Enter an Email';
+                                }
+                                return null;
                               }),
                           SizedBox(
                             height: 20.0.h,
@@ -121,8 +128,10 @@ class SignUpScreen extends StatelessWidget {
                                 cubit.changeVisibility();
                               },
                               validate: (value) {
-                                if (value != null && value == '')
+                                if (value != null && value == '') {
                                   return 'Please, Enter your password';
+                                }
+                                return null;
                               }),
                           SizedBox(
                             height: 20.0.h,
@@ -133,8 +142,10 @@ class SignUpScreen extends StatelessWidget {
                               keyboardType: TextInputType.phone,
                               prefixIcon: Icons.phone,
                               validate: (value) {
-                                if (value != null && value == '')
+                                if (value != null && value == '') {
                                   return 'Please, Enter Your Phone Number';
+                                }
+                                return null;
                               }),
                           SizedBox(
                             height: 40.0.h,
@@ -165,7 +176,7 @@ class SignUpScreen extends StatelessWidget {
                                         fontSize: 14.0.sp,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5.0,
                                     ),
                                     Icon(

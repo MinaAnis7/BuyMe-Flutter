@@ -1,13 +1,14 @@
 import '../modules/login_model.dart';
 
-class ProfileModel
-{
+class ProfileModel {
   late bool status;
   late UserData data;
 
-  ProfileModel.fromJson(Map<String, dynamic> json)
-  {
+  ProfileModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = UserData.fromJson(json['data']);
+    try {
+      data = UserData.fromJson(json['data']);
+      // ignore: empty_catches
+    } catch (e) {}
   }
 }

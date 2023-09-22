@@ -1,8 +1,6 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/favorite_model.dart';
 import 'package:shop_app/models/get_favorites_model.dart';
@@ -27,7 +25,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
   List<BottomNavigationBarItem> navItems = [
     BottomNavigationBarItem(
-      icon: Icon(Icons.home_outlined),
+      icon: const Icon(Icons.home_outlined),
       label: 'Home',
       activeIcon: Icon(
         Icons.home,
@@ -35,7 +33,7 @@ class HomeCubit extends Cubit<HomeStates> {
       ),
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.category_outlined),
+      icon: const Icon(Icons.category_outlined),
       label: 'Category',
       activeIcon: Icon(
         Icons.category,
@@ -43,7 +41,7 @@ class HomeCubit extends Cubit<HomeStates> {
       ),
     ),
     BottomNavigationBarItem(
-        icon: Icon(
+        icon: const Icon(
           Icons.favorite_outline,
         ),
         label: 'Favorites',
@@ -52,7 +50,7 @@ class HomeCubit extends Cubit<HomeStates> {
           color: orange,
         )),
     BottomNavigationBarItem(
-      icon: Icon(Icons.settings_outlined),
+      icon: const Icon(Icons.settings_outlined),
       label: 'Settings',
       activeIcon: Icon(
         Icons.settings,
@@ -62,9 +60,9 @@ class HomeCubit extends Cubit<HomeStates> {
   ];
 
   List<Widget> screens = [
-    ProductsScreen(),
-    CategoryScreen(),
-    FavoritesScreen(),
+    const ProductsScreen(),
+    const CategoryScreen(),
+    const FavoritesScreen(),
     SettingsScreen(),
   ];
 
@@ -75,20 +73,19 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ChangeHomeNavIndexState());
   }
 
-  HomeDataModel? homeDataModel = null;
+  HomeDataModel? homeDataModel;
 
   void getHomeData() {
     emit(GetHomeDataLoadingSate());
 
     DioHelper.getData(
-      method: HOME,
+      method: kHOME,
       token: CacheHelper.getData(key: 'token'),
       lang: CacheHelper.getData(key: 'lang') ?? 'en',
     ).then((response) {
       homeDataModel = HomeDataModel.fromJson(response.data);
       emit(GetHomeDataSuccessSate());
     }).catchError((error) {
-      print(error.toString());
       emit(GetHomeDataErrorSate());
     });
   }
@@ -97,13 +94,12 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void getCategoryData() {
     DioHelper.getData(
-            method: GET_CATEGORY,
+            method: kGetCATEGORY,
             lang: CacheHelper.getData(key: 'lang') ?? 'en')
         .then((response) {
       categoryModel = CategoryModel.fromJson(response.data);
       emit(GetCategorySuccessSate());
     }).catchError((error) {
-      print(error.toString());
       emit(GetCategoryErrorSate());
     });
   }
@@ -114,7 +110,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ChangeFavState());
 
     DioHelper.postData(
-      method: CHANGE_FAV,
+      method: kChangeFAV,
       data: {
         'product_id': id,
       },
@@ -134,7 +130,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void getFavorites() {
     DioHelper.getData(
-      method: CHANGE_FAV,
+      method: kChangeFAV,
       token: CacheHelper.getData(key: 'token'),
       lang: CacheHelper.getData(key: 'lang') ?? 'en',
     ).then((response) {
@@ -142,7 +138,6 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(GetFavSuccessState());
     }).catchError((error) {
       emit(GetFavErrorState());
-      print(error.toString());
     });
   }
 
@@ -153,18 +148,17 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ChangeThemeMode());
   }
 
-  ProfileModel? profileModel = null;
+  ProfileModel? profileModel;
 
   void getProfileData() {
     DioHelper.getData(
-      method: GET_PROFILE,
+      method: kGetPROFILE,
       token: CacheHelper.getData(key: 'token'),
       lang: CacheHelper.getData(key: 'lang') ?? 'en',
     ).then((response) {
       profileModel = ProfileModel.fromJson(response.data);
       emit(GetProfileSuccessState());
     }).catchError((error) {
-      print(error.toString());
       emit(GetProfileErrorState());
     });
   }
@@ -187,7 +181,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(UpdateProfileLoadingState());
 
     DioHelper.putData(
-      method: UPDATE_PROFILE,
+      method: kUpdatePROFILE,
       data: {
         'name': name,
         'password': password,
@@ -230,7 +224,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(SignUpLoadingState());
 
     DioHelper.postData(
-      method: SIGN_UP,
+      method: kSignUp,
       data: {
         "name": name,
         "phone": phone,
@@ -259,13 +253,13 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ChangeLanguage());
   }
 
-  SearchModel? searchModel = null;
+  SearchModel? searchModel;
 
   void getSearch(String text) {
     emit(GetSearchLoading());
 
     DioHelper.postData(
-      method: SEARCH,
+      method: kSEARCH,
       data: {
         "text": text,
       },

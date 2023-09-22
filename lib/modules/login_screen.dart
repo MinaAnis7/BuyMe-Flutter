@@ -13,6 +13,8 @@ import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:shop_app/shared/network/styles/colors.dart';
 
 class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
@@ -33,7 +35,7 @@ class LoginScreen extends StatelessWidget {
             HomeCubit.get(context).getHomeData();
             HomeCubit.get(context).getFavorites();
             HomeCubit.get(context).getProfileData();
-            navigateAndRemove(context, HomeLayout());
+            navigateAndRemove(context, const HomeLayout());
           } else {
             defaultToast(
                 context: context,
@@ -55,7 +57,7 @@ class LoginScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: Form(
                       key: formKey,
                       child: Column(
@@ -82,8 +84,10 @@ class LoginScreen extends StatelessWidget {
                               keyboardType: TextInputType.emailAddress,
                               prefixIcon: Icons.alternate_email,
                               validate: (value) {
-                                if (value != null && value == '')
+                                if (value != null && value == '') {
                                   return 'Please, Enter an Email';
+                                }
+                                return null;
                               }),
                           SizedBox(
                             height: 20.0.h,
@@ -100,8 +104,10 @@ class LoginScreen extends StatelessWidget {
                                 LoginCubit.get(context).changeVisibilityMode();
                               },
                               validate: (value) {
-                                if (value != null && value == '')
+                                if (value != null && value == '') {
                                   return 'Please, Enter your password';
+                                }
+                                return null;
                               }),
                           SizedBox(
                             height: 40.0.h,
@@ -112,10 +118,11 @@ class LoginScreen extends StatelessWidget {
                             children: [
                               ConditionalBuilder(
                                 condition: state is! LoginLoadingState,
+                                // ignore: non_constant_identifier_names
                                 builder: (Context) => defaultButton(
                                   onPressed: () {
                                     if (formKey.currentState!.validate()) {
-                                      LoginCubit.get(context).LogIn(
+                                      LoginCubit.get(context).logIn(
                                         email: emailController.text.toString(),
                                         password:
                                             passwordController.text.toString(),
@@ -133,7 +140,7 @@ class LoginScreen extends StatelessWidget {
                                           fontSize: 14.0.sp,
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 5.0,
                                       ),
                                       Icon(

@@ -12,8 +12,11 @@ import 'package:shop_app/shared/cubits/home_cubit/home_states.dart';
 import 'package:shop_app/shared/network/styles/colors.dart';
 import '../shared/network/local/cache_helper.dart';
 
+// ignore: must_be_immutable
 class SettingsScreen extends StatelessWidget {
   late Offset offset;
+
+  SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +28,8 @@ class SettingsScreen extends StatelessWidget {
         return ConditionalBuilder(
           condition: cubit.profileModel != null,
           builder: (context) => SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Container(
+            physics: const BouncingScrollPhysics(),
+            child: SizedBox(
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,7 +156,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,7 +184,7 @@ class SettingsScreen extends StatelessWidget {
                                         : Colors.black,
                                   ),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 InkWell(
                                   onTap: () async {
                                     await showMenu(
@@ -278,7 +281,7 @@ class SettingsScreen extends StatelessWidget {
                                         : Colors.black,
                                   ),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 Padding(
                                   padding: EdgeInsets.all(12.0.h),
                                   child: Transform.scale(
@@ -289,8 +292,9 @@ class SettingsScreen extends StatelessWidget {
                                         cubit.changeThemeMode(state);
                                       },
                                       activeColor: orange,
-                                      thumbColor:
-                                          cubit.isDark ? asmarFate7 : Colors.white,
+                                      thumbColor: cubit.isDark
+                                          ? asmarFate7
+                                          : Colors.white,
                                     ),
                                   ),
                                 ),
@@ -336,13 +340,13 @@ class SettingsScreen extends StatelessWidget {
                             color: cubit.isDark ? Colors.white : Colors.black,
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         InkWell(
                           borderRadius: BorderRadius.circular(10.0.sp),
                           highlightColor: cubit.isDark ? asmarFate7 : offWhite,
                           onTap: () {
                             CacheHelper.removeData(key: 'token');
-                            navigateAndRemove(context, LoginScreen());
+                            navigateAndRemove(context, const LoginScreen());
                           },
                           child: Container(
                             padding: EdgeInsets.all(10.0.sp),

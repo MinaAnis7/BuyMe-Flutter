@@ -4,7 +4,7 @@ import 'package:shop_app/shared/network/styles/colors.dart';
 
 ThemeData lightTheme = ThemeData(
   fontFamily: 'Poppens',
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     titleTextStyle: TextStyle(
       color: Colors.black,
     ),
@@ -30,10 +30,8 @@ ThemeData lightTheme = ThemeData(
 ThemeData darkTheme = ThemeData(
   fontFamily: 'Poppens',
   appBarTheme: AppBarTheme(
-    titleTextStyle: TextStyle(
-      color: Colors.white
-    ),
-    iconTheme: IconThemeData(color: Colors.white),
+    titleTextStyle: const TextStyle(color: Colors.white),
+    iconTheme: const IconThemeData(color: Colors.white),
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: asmar,
       statusBarIconBrightness: Brightness.light,
@@ -44,7 +42,7 @@ ThemeData darkTheme = ThemeData(
   scaffoldBackgroundColor: asmar,
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: asmarFate7,
-    selectedLabelStyle: TextStyle(
+    selectedLabelStyle: const TextStyle(
       color: Colors.white,
     ),
     selectedItemColor: orange,

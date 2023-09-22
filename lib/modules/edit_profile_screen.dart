@@ -9,6 +9,7 @@ import 'package:shop_app/shared/cubits/home_cubit/home_cubit.dart';
 import 'package:shop_app/shared/cubits/home_cubit/home_states.dart';
 import '../shared/network/styles/colors.dart';
 
+// ignore: must_be_immutable
 class EditProfileScreen extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -16,31 +17,29 @@ class EditProfileScreen extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
+  EditProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return  BlocConsumer<HomeCubit, HomeStates>(
+    return BlocConsumer<HomeCubit, HomeStates>(
       listener: (context, state) {
-        if(state is UpdateProfileSuccessState)
-          {
-            if(state.model.status)
-              {
-                defaultToast(
-                    context: context,
-                    message: state.model.message,
-                    iconColor: Colors.lightGreen,
-                    icon: Icons.check_circle,
-                );
-              }
-            else
-              {
-                defaultToast(
-                  context: context,
-                  message: state.model.message,
-                  iconColor: Colors.red,
-                  icon: Icons.error,
-                );
-              }
+        if (state is UpdateProfileSuccessState) {
+          if (state.model.status) {
+            defaultToast(
+              context: context,
+              message: state.model.message,
+              iconColor: Colors.lightGreen,
+              icon: Icons.check_circle,
+            );
+          } else {
+            defaultToast(
+              context: context,
+              message: state.model.message,
+              iconColor: Colors.red,
+              icon: Icons.error,
+            );
           }
+        }
       },
       builder: (context, state) {
         HomeCubit cubit = HomeCubit.get(context);
@@ -52,13 +51,15 @@ class EditProfileScreen extends StatelessWidget {
           ),
           body: ConditionalBuilder(
             condition: cubit.profileModel != null,
-            builder: (context) => Container(
+            builder: (context) => SizedBox(
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if(state is UpdateProfileLoadingState)
-                    LinearProgressIndicator(color: blue, ),
+                  if (state is UpdateProfileLoadingState)
+                    LinearProgressIndicator(
+                      color: blue,
+                    ),
                   //edit image
                   Stack(
                     alignment: Alignment.topRight,
@@ -71,16 +72,20 @@ class EditProfileScreen extends StatelessWidget {
                           child: ClipRRect(
                             clipBehavior: Clip.hardEdge,
                             borderRadius: BorderRadius.circular(50.0.sp),
-                            child: cubit.editImage != '' ?
-                            Image.file(
-                                File(cubit.editImage,),
-                              height: double.infinity,
-                              width: double.infinity,)
-                              : Image(
-                              image: NetworkImage(cubit.profileModel!.data.image),
-                            ),
-                            ),
+                            child: cubit.editImage != ''
+                                ? Image.file(
+                                    File(
+                                      cubit.editImage,
+                                    ),
+                                    height: double.infinity,
+                                    width: double.infinity,
+                                  )
+                                : Image(
+                                    image: NetworkImage(
+                                        cubit.profileModel!.data.image),
+                                  ),
                           ),
+                        ),
                       ),
                       CircleAvatar(
                         radius: 15.0.sp,
@@ -92,25 +97,29 @@ class EditProfileScreen extends StatelessWidget {
                           child: IconButton(
                             onPressed: () async {
                               final imagePicker = ImagePicker();
-                              final image = await imagePicker.pickImage(source: ImageSource.gallery);
+                              final image = await imagePicker.pickImage(
+                                  source: ImageSource.gallery);
                               cubit.changeImage(image!.path);
                             },
-                            icon: Icon(Icons.edit_outlined,
-                            color: cubit.isDark ? skin : Colors.black,
+                            icon: Icon(
+                              Icons.edit_outlined,
+                              color: cubit.isDark ? skin : Colors.black,
                               size: 24.0.sp,
                             ),
                             color: Colors.black,
-                            padding: EdgeInsets.all(0.0),
+                            padding: const EdgeInsets.all(0.0),
                           ),
                         ),
                       )
                     ],
                   ),
-                  SizedBox(height: 20.0.h,),
+                  SizedBox(
+                    height: 20.0.h,
+                  ),
                   //name
                   Expanded(
                     child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: Form(
                         key: formKey,
                         child: Padding(
@@ -118,63 +127,74 @@ class EditProfileScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               defaultTFF(
-                                text: 'Name',
-                                prefixIcon: Icons.person,
-                                controller: nameController,
-                                onTap: ()
-                                {
-                                  nameController.text = cubit.profileModel!.data.name;
-                                },
-                                validate: (value){
-                                  if(value != null && value == '')
-                                    return 'Please, Enter Your Name';
-                                }
+                                  text: 'Name',
+                                  prefixIcon: Icons.person,
+                                  controller: nameController,
+                                  onTap: () {
+                                    nameController.text =
+                                        cubit.profileModel!.data.name;
+                                  },
+                                  validate: (value) {
+                                    if (value != null && value == '') {
+                                      return 'Please, Enter Your Name';
+                                    }
+                                    return null;
+                                  }),
+                              SizedBox(
+                                height: 15.0.h,
                               ),
-                              SizedBox(height: 15.0.h,),
                               //email
                               defaultTFF(
-                                text: 'Email',
-                                prefixIcon: Icons.alternate_email,
-                                controller: emailController,
-                                onTap: ()
-                                {
-                                  emailController.text = cubit.profileModel!.data.email;
-                                },
-                                keyboardType: TextInputType.emailAddress,
-                                validate: (value){
-                                  if(value != null && value == '')
-                                    return 'Please, Enter Email Address';
-                                }
-                              ),
+                                  text: 'Email',
+                                  prefixIcon: Icons.alternate_email,
+                                  controller: emailController,
+                                  onTap: () {
+                                    emailController.text =
+                                        cubit.profileModel!.data.email;
+                                  },
+                                  keyboardType: TextInputType.emailAddress,
+                                  validate: (value) {
+                                    if (value != null && value == '') {
+                                      return 'Please, Enter Email Address';
+                                    }
+                                    return null;
+                                  }),
 
-                              SizedBox(height: 15.0.h,),
+                              SizedBox(
+                                height: 15.0.h,
+                              ),
                               //password
                               defaultTFF(
                                 text: 'Password',
                                 prefixIcon: Icons.lock_outline_rounded,
                                 controller: passwordController,
                                 isObscure: true,
-                                  validate: (value){
-                                    if(value != null && value == '')
-                                      return 'Please, Enter Password';
-                                  },
+                                validate: (value) {
+                                  if (value != null && value == '') {
+                                    return 'Please, Enter Password';
+                                  }
+                                  return null;
+                                },
                               ),
-                              SizedBox(height: 15.0.h,),
+                              SizedBox(
+                                height: 15.0.h,
+                              ),
                               //phone
                               defaultTFF(
-                                text: 'Phone',
-                                prefixIcon: Icons.phone,
-                                controller: phoneController,
-                                keyboardType: TextInputType.phone,
-                                onTap: ()
-                                {
-                                  phoneController.text = cubit.profileModel!.data.phone;
-                                },
-                                validate: (value){
-                                  if(value != null && value == '')
-                                    return 'Please, Enter Phone Number';
-                                }
-                              ),
+                                  text: 'Phone',
+                                  prefixIcon: Icons.phone,
+                                  controller: phoneController,
+                                  keyboardType: TextInputType.phone,
+                                  onTap: () {
+                                    phoneController.text =
+                                        cubit.profileModel!.data.phone;
+                                  },
+                                  validate: (value) {
+                                    if (value != null && value == '') {
+                                      return 'Please, Enter Phone Number';
+                                    }
+                                    return null;
+                                  }),
                             ],
                           ),
                         ),
@@ -183,20 +203,21 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                   //Update Button
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0,),
-                    child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                    ),
+                    child: SizedBox(
                       width: double.infinity,
                       child: defaultButton(
-                        onPressed: (){
-                          if(formKey.currentState!.validate())
-                            {
-                              cubit.updateProfile(
-                                name: nameController.text,
-                                phone: phoneController.text,
-                                password: passwordController.text,
-                                email: emailController.text,
-                              );
-                            }
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            cubit.updateProfile(
+                              name: nameController.text,
+                              phone: phoneController.text,
+                              password: passwordController.text,
+                              email: emailController.text,
+                            );
+                          }
                         },
                         child: Text(
                           'Update Changes',
@@ -209,7 +230,9 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5.0.h,),
+                  SizedBox(
+                    height: 5.0.h,
+                  ),
                 ],
               ),
             ),
